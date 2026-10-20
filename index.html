@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T2 · Акция Комбо · Регионы</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#2a2a30;color:#fff;font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+:root{
+  --t2-bg:#2a2a30;--t2-card:#35353c;--t2-card-hover:#3d3d45;--t2-card-soft:#2f2f36;
+  --t2-border:#44444c;--t2-border-soft:#3a3a42;--t2-text:#ffffff;--t2-text-sub:#d0d0d5;
+  --t2-muted:#9a9aa2;--t2-pink:#ff0080;--t2-pink-light:#ff4da6;--t2-pink-soft:rgba(255,0,128,.12);
+  --t2-pink-glow:rgba(255,0,128,.35);--t2-pink-border:rgba(255,0,128,.35);
+  --benefit-pos:#00d97e;--benefit-neg:#ff4757;
+}
+.header{position:sticky;top:0;z-index:100;background:rgba(34,34,42,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--t2-border);box-shadow:0 2px 12px rgba(0,0,0,.3);padding:14px 28px;display:flex;align-items:center;gap:24px}
+.header__brand{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.logo-t2{display:flex;align-items:center;gap:16px;text-decoration:none}
+.logo-t2__mark{width:54px;height:54px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;background:transparent}
+.logo-t2__mark::before{content:'';position:absolute;top:4px;left:2px;width:14px;height:14px;background:var(--t2-pink);border-radius:3px;box-shadow:0 0 16px var(--t2-pink-glow)}
+.logo-t2__mark span{color:#fff;font-weight:900;font-size:34px;font-style:italic;letter-spacing:-2.5px;position:relative;z-index:1;text-shadow:2px 3px 0px rgba(0,0,0,0.9),0px 6px 12px rgba(0,0,0,0.6);background:linear-gradient(180deg,#ffffff 0%,#c0c0c5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-t2__text{display:flex;flex-direction:column;line-height:1.15;margin-top:2px}
+.logo-t2__title{font-size:18px;font-weight:900;color:#fff}
+.logo-t2__sub{font-size:12px;color:var(--t2-muted);font-weight:600}
+.header__nav{display:flex;gap:4px;background:#1c1c22;padding:5px;border-radius:12px;border:1px solid var(--t2-border);margin-left:20px}
+.nav-btn{padding:10px 24px;border:none;border-radius:9px;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;background:transparent;color:var(--t2-muted);transition:all .18s;display:flex;align-items:center;gap:6px}
+.nav-btn.active{background:var(--t2-pink);color:#fff;box-shadow:0 4px 16px var(--t2-pink-glow)}
+.date-badge{background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:5px;letter-spacing:.3px}
+.nav-btn.active .date-badge{background:rgba(0,0,0,.2)}
+.header__spacer{flex:1}
+.header__back{display:none;padding:8px 16px;border:1px solid var(--t2-border);border-radius:9px;background:transparent;color:var(--t2-muted);cursor:pointer;font-weight:700;font-family:inherit;transition:all .18s}
+.header__back:hover{border-color:var(--t2-pink);color:#fff}
+.view{display:none}
+.view.active{display:block}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 80px);padding:40px 20px;text-align:center}
+.loading-spinner{width:48px;height:48px;border:4px solid var(--t2-border);border-top-color:var(--t2-pink);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-title{font-size:24px;font-weight:900;margin-bottom:8px}
+.loading-sub{font-size:14px;color:var(--t2-muted)}
+.region-hero{max-width:1400px;margin:0 auto;padding:48px 28px 24px;text-align:center}
+.region-hero__title{font-size:32px;font-weight:900;margin-bottom:8px}
+.region-hero__title span{color:var(--t2-pink)}
+.region-hero__sub{font-size:15px;color:var(--t2-muted)}
+.region-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;max-width:1400px;margin:0 auto;padding:0 28px 80px}
+.region-card{background:var(--t2-card);border:1px solid var(--t2-border);border-radius:16px;padding:20px 22px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.region-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,var(--t2-pink-glow) 100%);opacity:0;transition:opacity .22s;pointer-events:none}
+.region-card:hover{border-color:var(--t2-pink);transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,0,128,.25)}
+.region-card:hover::before{opacity:.15}
+.region-card__header{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative}
+.region-card__emoji{font-size:32px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))}
+.region-card__name{font-size:20px;font-weight:900;color:#fff}
+.region-card__total{font-size:13px;color:var(--t2-muted);margin-bottom:14px;position:relative}
+.region-card__total b{color:#fff;font-size:18px;font-weight:900}
+.region-card__discounts{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.discount-chip{display:flex;flex-direction:column;align-items:center;padding:8px 14px;border-radius:10px;border:1px solid var(--t2-border);background:var(--t2-card-soft);min-width:70px}
+.discount-chip__label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t2-muted);font-weight:700;margin-bottom:2px}
+.discount-chip__value{font-size:18px;font-weight:900;color:#fff}
+.discount-chip--30{border-color:rgba(255,0,128,.4)}
+.discount-chip--30 .discount-chip__value{color:var(--t2-pink)}
+.discount-chip--35{border-color:rgba(255,0,128,.4)}
+.discount-chip--35 .discount-chip__value{color:var(--t2-pink)}
+.discount-chip--20{border-color:rgba(37,99,235,.4)}
+.discount-chip--20 .discount-chip__value{color:#60a5fa}
+.discount-chip--25{border-color:rgba(5,150,105,.4)}
+.discount-chip--25 .discount-chip__value{color:var(--benefit-pos)}
+.discount-chip--15{border-color:rgba(249,115,22,.4)}
+.discount-chip--15 .discount-chip__value{color:#fb923c}
+.discount-chip.hidden{display:none}
+.controls-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px 28px;background:rgba(34,34,42,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--t2-border);position:sticky;top:82px;z-index:95;height:280px}
+.control-panel{background:var(--t2-card);border:1px solid var(--t2-border);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;height:100%;overflow:hidden}
+.control-panel__title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--t2-muted);font-weight:800;border-bottom:1px solid var(--t2-border-soft);padding-bottom:8px;flex-shrink:0;display:flex;justify-content:space-between}
+.control-panel__title span{color:var(--t2-pink-light);text-transform:none;letter-spacing:0}
+.tt-list{display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1;padding-right:4px}
+.tt-list::-webkit-scrollbar{width:6px}
+.tt-list::-webkit-scrollbar-track{background:var(--t2-card-soft);border-radius:3px}
+.tt-list::-webkit-scrollbar-thumb{background:var(--t2-pink);border-radius:3px}
+.tt-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--t2-muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit;text-align:left;flex-shrink:0}
+.tt-item:hover{background:rgba(255,255,255,.04);color:#fff}
+.tt-item.active{background:var(--t2-pink-soft);border-color:var(--t2-pink-border);color:#fff;box-shadow:inset 3px 0 0 var(--t2-pink)}
+.tt-item__count{font-size:10px;font-weight:800;background:rgba(255,255,255,.1);color:var(--t2-muted);padding:2px 6px;border-radius:5px;flex-shrink:0}
+.tt-item.active .tt-item__count{background:var(--t2-pink);color:#fff}
+.addon-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:6px;flex:1}
+.addon-chip{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;padding:8px;border:1px solid var(--t2-border);border-radius:10px;background:var(--t2-card-soft);color:var(--t2-muted);cursor:pointer;transition:all .18s;font-family:inherit;text-align:center}
+.addon-chip:hover{border-color:var(--t2-pink);color:#fff}
+.addon-chip.active{background:var(--t2-pink);border-color:var(--t2-pink);color:#fff;box-shadow:0 4px 14px var(--t2-pink-glow)}
+.addon-chip__name{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.addon-chip__meta{font-size:10px;font-weight:800;opacity:.8}
+.addon-chip.active .addon-chip__meta{opacity:.9}
+.desc-panel{background:linear-gradient(135deg,rgba(255,0,128,0.08) 0%,rgba(53,53,60,1) 100%);border:1px solid var(--t2-pink-border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;height:100%;overflow-y:auto}
+.desc-panel::-webkit-scrollbar{width:6px}
+.desc-panel::-webkit-scrollbar-track{background:rgba(0,0,0,0.1);border-radius:3px}
+.desc-panel::-webkit-scrollbar-thumb{background:var(--t2-pink);border-radius:3px}
+.desc-title{font-size:15px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.desc-title span{background:var(--t2-pink);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:6px}
+.desc-text{font-size:13px;color:var(--t2-text-sub);line-height:1.5}
+.desc-features{margin-top:4px;display:flex;flex-direction:column;gap:4px}
+.desc-features li{font-size:12px;color:var(--t2-muted);list-style:none;padding-left:14px;position:relative}
+.desc-features li::before{content:'✓';position:absolute;left:0;color:var(--benefit-pos);font-weight:900}
+.kpi-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 28px;background:rgba(34,34,42,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--t2-border)}
+.kpi-card{background:var(--t2-card);border:1px solid var(--t2-border);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column}
+.kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--t2-muted);font-weight:700}
+.kpi-value{font-size:24px;font-weight:900;color:#fff;line-height:1.15}
+.kpi-value--pink{color:var(--t2-pink)}
+.kpi-value--address{font-size:12px;font-weight:700;line-height:1.3;color:var(--t2-pink)}
+.content{max-width:1920px;margin:0 auto;padding:24px 28px 80px}
+.combo-section{margin-bottom:32px}
+.combo-section__header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}
+.combo-section__title{font-size:18px;font-weight:900;color:#fff}
+.combo-section__badge{font-size:12px;font-weight:900;padding:4px 12px;border-radius:999px;background:var(--t2-pink);color:#fff;box-shadow:0 4px 14px var(--t2-pink-glow)}
+.combo-section__count{font-size:13px;color:var(--t2-muted);font-weight:600}
+.table-wrap{background:var(--t2-card);border:1px solid var(--t2-border);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.stock-table{width:100%;border-collapse:collapse}
+.stock-table th{text-align:left;padding:12px 16px;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--t2-muted);font-weight:800;background:#2c2c33;border-bottom:1px solid var(--t2-border);white-space:nowrap}
+.stock-table td{padding:12px 16px;border-bottom:1px solid var(--t2-border-soft);vertical-align:middle;font-size:13px;color:var(--t2-text-sub)}
+.stock-table tr:last-child td{border-bottom:none}
+.stock-row{cursor:pointer;transition:background .14s}
+.stock-row:hover{background:var(--t2-card-hover)}
+.stock-row.selected{background:var(--t2-pink-soft);box-shadow:inset 3px 0 0 var(--t2-pink)}
+.stock-row__name{font-weight:700;color:#fff;font-size:14px}
+.stock-row__memory{font-size:11px;color:var(--t2-muted);margin-top:2px}
+.stock-row__qty{text-align:center;font-weight:800;font-size:16px;color:#fff}
+.stock-row__qty--low{color:var(--benefit-neg)}
+.stock-row__price{text-align:center;font-weight:700;color:#fff;white-space:nowrap}
+.stock-row__colors{display:flex;align-items:center;gap:4px;justify-content:center;flex-wrap:wrap}
+.color-dot{width:11px;height:11px;border-radius:50%;border:1px solid rgba(255,255,255,.25);flex-shrink:0}
+.color-dot--silver{background:#c0c0c0}
+.color-dot--purple{background:#7c3aed}
+.color-dot--blue{background:#2563eb}
+.color-dot--gray{background:#4b5563}
+.color-dot--green{background:#059669}
+.color-dot--black{background:#1a1a1a;border-color:#666}
+.color-dot--white{background:#fff;border-color:#fff}
+.color-dot--titanium{background:#8b8b8b}
+.color-dot--gold{background:#d4a017}
+.color-dot--orange{background:#f97316}
+.color-dot--beige{background:#d4c4a8}
+.color-dot--brown{background:#8b5a2b}
+.color-dot--violet{background:#8a2be2}
+.color-dot--graphite{background:#383838}
+.color-dot--other{background:#888}
+.color-count{font-size:10px;color:var(--t2-muted);font-weight:800;margin-left:2px}
+.benefit-cell{text-align:center;white-space:nowrap}
+.benefit-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:10px;font-weight:900;font-size:12px}
+.benefit-pill--pos{background:rgba(0,217,126,.15);border:1px solid var(--benefit-pos);color:var(--benefit-pos);box-shadow:0 0 16px rgba(0,217,126,.4);animation:pulse-green 2.2s infinite}
+.benefit-pill--neg{background:rgba(255,71,87,.12);border:1px solid var(--benefit-neg);color:var(--benefit-neg)}
+.benefit-pill__sticker{background:var(--benefit-pos);color:#000;font-size:9px;font-weight:900;padding:2px 6px;border-radius:5px;letter-spacing:.5px;text-transform:uppercase}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 16px rgba(0,217,126,.4)}50%{box-shadow:0 0 28px rgba(0,217,126,.65)}}
+.stock-row__btn{display:inline-block;padding:5px 12px;border-radius:8px;background:transparent;border:1px solid var(--t2-pink-border);color:var(--t2-pink-light);font-size:11px;font-weight:800;cursor:pointer;transition:all .15s;font-family:inherit}
+.stock-row__btn:hover{background:var(--t2-pink);color:#fff;border-color:var(--t2-pink)}
+.pres-hero{background:linear-gradient(135deg,#2f2f36 0%,#3a1f30 100%);border:1px solid var(--t2-pink-border);border-radius:20px;padding:36px 40px;margin-bottom:36px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,0,128,.12)}
+.pres-hero::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,var(--t2-pink-glow) 0%,transparent 70%);pointer-events:none}
+.pres-hero__title{font-size:36px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;position:relative}
+.pres-hero__title span{color:var(--t2-pink)}
+.pres-hero__sub{font-size:16px;color:var(--t2-muted);position:relative;margin-bottom:20px}
+.pres-hero__formula{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(0,0,0,.3);padding:12px 20px;border-radius:12px;border:1px solid var(--t2-pink-border);position:relative;font-size:14px;font-weight:600;color:#fff}
+.pres-hero__formula b{color:var(--t2-pink-light)}
+.pres-hero__formula .plus{color:var(--t2-muted);font-weight:400}
+.discount-section{margin-bottom:48px}
+.discount-section__header{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:28px;text-align:center}
+.discount-section__badge{font-size:48px;font-weight:900;padding:14px 40px;border-radius:22px;background:var(--t2-pink);color:#fff;box-shadow:0 10px 40px var(--t2-pink-glow);line-height:1;letter-spacing:-1px}
+.discount-section__title{font-size:24px;font-weight:900;color:#fff}
+.discount-section__count{font-size:14px;color:var(--t2-muted);font-weight:600}
+.pres-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.pres-card{width:200px;flex-shrink:0;background:var(--t2-card);border:1px solid var(--t2-border);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.pres-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,var(--t2-pink-glow) 100%);opacity:0;transition:opacity .22s;pointer-events:none}
+.pres-card:hover{border-color:var(--t2-pink);transform:translateY(-4px);box-shadow:0 12px 32px rgba(255,0,128,.25)}
+.pres-card:hover::before{opacity:.2}
+.pres-card__brand{font-size:11px;font-weight:800;color:var(--t2-pink-light);text-transform:uppercase;letter-spacing:1px;position:relative}
+.pres-card__name{font-size:15px;font-weight:800;color:#fff;margin:6px 0 2px;position:relative}
+.pres-card__memory{font-size:12px;color:var(--t2-muted);position:relative}
+.pres-card__price{font-size:18px;font-weight:900;color:#fff;margin-top:12px;position:relative}
+.pres-card__price-old{font-size:12px;color:var(--t2-muted);position:relative;margin-top:2px}
+.pres-card__price-old b{color:var(--benefit-pos);font-weight:800}
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);opacity:0;visibility:hidden;transition:all .25s;z-index:198}
+.detail-overlay.open{opacity:1;visibility:visible}
+.detail-panel{position:fixed;top:0;right:-560px;width:540px;max-width:100vw;height:100vh;background:#2a2a30;border-left:1px solid var(--t2-pink-border);box-shadow:-20px 0 60px rgba(0,0,0,.5);transition:right .3s cubic-bezier(.4,0,.2,1);z-index:199;overflow-y:auto;display:flex;flex-direction:column}
+.detail-panel.open{right:0}
+.detail-panel__header{padding:22px 26px 18px;border-bottom:1px solid var(--t2-border);position:sticky;top:0;background:#2a2a30;z-index:2}
+.detail-panel__close{position:absolute;top:18px;right:18px;width:34px;height:34px;border:1px solid var(--t2-border);background:#3a3a42;border-radius:9px;font-size:17px;cursor:pointer;color:var(--t2-muted);display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit}
+.detail-panel__close:hover{background:var(--t2-pink);color:#fff;border-color:var(--t2-pink)}
+.detail-panel__title{font-size:18px;font-weight:800;color:#fff;padding-right:44px;margin-bottom:8px}
+.detail-panel__badge{display:inline-block;font-size:11px;font-weight:900;padding:4px 12px;border-radius:999px;background:var(--t2-pink);color:#fff}
+.detail-panel__body{padding:20px 26px 30px;flex:1}
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.spec-item{display:flex;flex-direction:column;background:var(--t2-card);border:1px solid var(--t2-border);border-radius:10px;padding:10px 12px}
+.spec-item__label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--t2-muted);font-weight:800;margin-bottom:3px}
+.spec-item__value{font-size:12px;font-weight:600;color:#fff}
+.spec-item--full{grid-column:1/-1}
+.highlight-box{display:flex;align-items:flex-start;gap:10px;background:rgba(255,0,128,.1);border:1px solid var(--t2-pink-border);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#fff}
+.highlight-box__icon{color:var(--t2-pink);font-size:16px;flex-shrink:0;line-height:1.3}
+.sell-script{background:linear-gradient(135deg,rgba(255,0,128,.12) 0%,rgba(255,0,128,.05) 100%);border:1px solid var(--t2-pink-border);border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.sell-script__header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sell-script__icon{font-size:16px}
+.sell-script__title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--t2-pink-light)}
+.sell-script__text{font-size:13px;line-height:1.6;color:#fff}
+.calc-box{border:1px solid var(--t2-border);border-radius:14px;overflow:hidden;margin-bottom:16px;background:var(--t2-card-soft)}
+.calc-box__title{background:#2c2c33;padding:10px 16px;font-size:10px;text-transform:uppercase;letter-spacing:.6px;font-weight:800;color:var(--t2-muted);border-bottom:1px solid var(--t2-border)}
+.calc-row{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1px solid var(--t2-border-soft);font-size:13px;background:var(--t2-card)}
+.calc-row:last-child{border-bottom:none}
+.calc-row__label{color:var(--t2-muted)}
+.calc-row__value{font-weight:700;color:#fff}
+.calc-row--total{background:var(--t2-card-soft);border-top:1px solid var(--t2-border)}
+.calc-row--total .calc-row__label{font-weight:800;color:#fff}
+.calc-row--total .calc-row__value{font-size:16px;font-weight:900}
+.calc-benefit{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,217,126,.12);border-top:1px solid var(--t2-border)}
+.calc-benefit--neg{background:rgba(255,71,87,.12)}
+.calc-benefit__label{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.calc-benefit__sticker{background:var(--benefit-pos);color:#000;font-size:10px;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:.5px;text-transform:uppercase}
+.calc-benefit__value{font-size:20px;font-weight:900;color:var(--benefit-pos)}
+.calc-benefit--neg .calc-benefit__value{color:var(--benefit-neg)}
+.formula-note{font-size:11px;color:var(--t2-muted);padding:12px 16px;background:var(--t2-card-soft);border:1px solid var(--t2-border);border-radius:10px;line-height:1.6}
+.empty-state{text-align:center;padding:60px 20px;color:var(--t2-muted);font-size:15px}
+.debug-panel{background:#1c1c22;border:1px solid #ff4757;border-radius:12px;padding:20px;margin:20px auto;max-width:1000px;text-align:left;overflow:auto;color:#d0d0d5}
+.debug-panel table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+.debug-panel th,.debug-panel td{border:1px solid #44444c;padding:6px 10px;text-align:left;white-space:nowrap}
+.debug-panel th{background:#2a2a30;color:#fff}
+@media(max-width:1100px){.controls-grid{grid-template-columns:1fr 1fr;height:auto}.desc-panel{grid-column:1/-1;height:200px}.kpi-bar{grid-template-columns:repeat(2,1fr)}.detail-panel{width:100%;right:-100%}.pres-hero__title{font-size:26px}.discount-section__badge{font-size:36px;padding:12px 30px}.pres-card{width:180px}}
+@media(max-width:800px){.controls-grid{grid-template-columns:1fr;height:auto}.control-panel{height:250px}.tt-list{flex-direction:row;flex-wrap:wrap;max-height:150px;overflow-x:auto}.tt-item{white-space:nowrap}.region-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}}
+@media(max-width:700px){.header{padding:10px 14px;gap:10px}.header__nav{padding:3px;margin-left:8px}.nav-btn{padding:7px 12px;font-size:11px}.content{padding:16px 14px 60px}.pres-hero{padding:24px 20px}.pres-hero__title{font-size:22px}.discount-section__badge{font-size:32px;padding:10px 24px}.discount-section__title{font-size:18px}.pres-card{width:100%;max-width:260px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header__brand">
+    <a class="logo-t2" href="#" onclick="goToRegions(event)">
+      <div class="logo-t2__mark"><span>t2</span></div>
+      <div class="logo-t2__text">
+        <div class="logo-t2__title">Акция Комбо</div>
+        <div class="logo-t2__sub">Выбор региона</div>
+      </div>
+    </a>
+  </div>
+  <nav class="header__nav" id="mainNav" style="display:none;">
+    <button class="nav-btn" data-view="presentation">Презентация</button>
+    <button class="nav-btn active" data-view="stock">Остатки <span class="date-badge" id="currentDateBadge"></span></button>
+  </nav>
+  <div class="header__spacer"></div>
+  <button class="header__back" id="backBtn" onclick="goToRegions(event)">← Регионы</button>
+</header>
+
+<!-- VIEW: LOADING -->
+<div class="view active" id="view-loading">
+  <div class="loading-screen">
+    <div class="loading-spinner"></div>
+    <h1 class="loading-title">Загружаем данные</h1>
+    <p class="loading-sub">Подключаемся к Google Таблице…</p>
+  </div>
+</div>
+
+<!-- VIEW: REGION SELECTOR -->
+<div class="view" id="view-regions">
+  <div class="region-hero">
+    <h1 class="region-hero__title">Выберите <span>регион</span></h1>
+    <p class="region-hero__sub">Для просмотра презентации и остатков</p>
+  </div>
+  <div class="region-grid" id="regionGrid"></div>
+</div>
+
+<!-- VIEW: STOCK -->
+<div class="view" id="view-stock">
+  <div class="controls-grid" id="controlsGrid">
+    <div class="control-panel">
+      <div class="control-panel__title">Торговая точка</div>
+      <div class="tt-list" id="ttList"></div>
+    </div>
+    <div class="control-panel">
+      <div class="control-panel__title">Дополнительный продукт</div>
+      <div class="addon-grid" id="addonGrid"></div>
+    </div>
+    <div class="desc-panel" id="descPanel"></div>
+  </div>
+  <div class="kpi-bar" id="kpiBar">
+    <div class="kpi-card"><span class="kpi-label">Точка</span><span class="kpi-value kpi-value--address" id="kpiTT">—</span></div>
+    <div class="kpi-card"><span class="kpi-label">Всего на точке</span><span class="kpi-value" id="kpiTotal">0</span></div>
+    <div class="kpi-card"><span class="kpi-label">Комбо 30% / 35%</span><span class="kpi-value" id="kpiCombo30">0</span></div>
+    <div class="kpi-card"><span class="kpi-label">Прочие скидки</span><span class="kpi-value kpi-value--pink" id="kpiComboOther">0</span></div>
+  </div>
+  <main class="content" id="content"></main>
+</div>
+
+<!-- VIEW: PRESENTATION -->
+<div class="view" id="view-presentation">
+  <main class="content" id="presContent"></main>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+<aside class="detail-panel" id="detailPanel">
+  <div class="detail-panel__header">
+    <button class="detail-panel__close" onclick="closeDetail()">✕</button>
+    <h3 class="detail-panel__title" id="detailTitle"></h3>
+    <span class="detail-panel__badge" id="detailBadge"></span>
+  </div>
+  <div class="detail-panel__body" id="detailBody"></div>
+</aside>
+
+<script>
+/* ============================================================
+   1. БАЗА ХАРАКТЕРИСТИК (SPECS)
+   ============================================================ */
+const SPECS = {
+  'Honor X5d Plus|4/128': { brand:'Honor', screen:'6.74" TFT LCD 90Hz', ram:'4 GB', rom:'128 GB', battery:'5260 мАч, 15W', os:'Android 15 + MagicOS 9.0', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 5260 мАч + защита экрана от царапин' },
+  'Honor X5d Plus|4/256': { brand:'Honor', screen:'6.74" TFT LCD 90Hz', ram:'4 GB', rom:'256 GB', battery:'5260 мАч, 15W', os:'Android 15 + MagicOS 9.0', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'256 ГБ памяти + батарея 5260 мАч' },
+  'Honor X6e|4/256': { brand:'Honor', screen:'6.61" TFT LCD 120Hz', ram:'4 GB', rom:'256 GB', battery:'7500 мАч, 45W', os:'Android 16 + MagicOS 10.0', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 7500 мАч + защита IP64' },
+  'Honor X7d|8/256': { brand:'Honor', screen:'6.77" TFT LCD 120Hz', ram:'8 GB', rom:'256 GB', battery:'6500 мАч, 35W', os:'Android 15 + MagicOS 9.0', mainCam:'108 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Камера 108 МП + батарея 6500 мАч' },
+  'Honor X7e|6/256': { brand:'Honor', screen:'6.61" TFT LCD 120Hz', ram:'6 GB', rom:'256 GB', battery:'7500 мАч, 45W', os:'Android 16 + MagicOS 10.0', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 7500 мАч — рекорд автономности' },
+  'Honor X8c|8/256': { brand:'Honor', screen:'6.7" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 35W', os:'Android 15 + MagicOS 9.0', mainCam:'108 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED + камера 108 МП с OIS + фронт 50 МП' },
+  'Honor X8d|8/128': { brand:'Honor', screen:'6.77" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'7000 мАч, 45W', os:'Android 16 + MagicOS 10.0', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'Экран AMOLED 120 Гц + камера 108 МП' },
+  'Honor X8d|8/256': { brand:'Honor', screen:'6.77" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 45W', os:'Android 16 + MagicOS 10.0', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'Экран AMOLED 120 Гц + камера 108 МП' },
+  'Honor X9d|8/256': { brand:'Honor', screen:'6.79" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'8300 мАч, 66W', os:'Android 15 + MagicOS 9.0', mainCam:'108 MP + 5 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'Батарея 8300 мАч + зарядка 66 Вт + IP69K' },
+  'Honor X9d|12/256': { brand:'Honor', screen:'6.79" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'8300 мАч, 66W', os:'Android 15 + MagicOS 9.0', mainCam:'108 MP + 5 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'Батарея 8300 мАч + 12 ГБ оперативы' },
+  'Honor 400 lite|8/256': { brand:'Honor', screen:'6.7" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5230 мАч, 35W', os:'Android 15 + MagicOS 9.0', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'AMOLED + камера 108 МП + ИИ-функции' },
+  'Honor 600 Lite|8/256': { brand:'Honor', screen:'6.6" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'6520 мАч, 45W', os:'Android 16 + MagicOS 10.0', mainCam:'108 MP + 5 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'AMOLED + камера 108 МП + IP66' },
+  'Honor 600|8/256': { brand:'Honor', screen:'6.57" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'6400 мАч, 80W', os:'Android 16 + MagicOS 10.0', mainCam:'200 MP + 12 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Камера 200 МП + фронт 50 МП + IP68/IP69K' },
+  'Honor 600|12/256': { brand:'Honor', screen:'6.57" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'6400 мАч, 80W', os:'Android 16 + MagicOS 10.0', mainCam:'200 MP + 12 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Камера 200 МП + 12 ГБ оперативы + IP68' },
+  'Infinix Hot 60 Pro|8/128': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'128 GB', battery:'5160 мАч, 45W', os:'Android 15 + XOS 15.1.1', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C, 3.5 мм', highlight:'AMOLED 144 Гц + Gorilla Glass 7i + вес 170 г' },
+  'Infinix Hot 60 Pro Plus|8/256': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'256 GB', battery:'5160 мАч, 45W', os:'Android 15 + XOS 15', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + 256 ГБ + зарядка 45 Вт' },
+  'Infinix Hot 60i|8/256': { brand:'Infinix', screen:'6.75" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 18W', os:'Android 15 + XOS 15', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C, 3.5 мм', highlight:'5G + батарея 6000 мАч + IP64' },
+  'Infinix Hot 70|4/128': { brand:'Infinix', screen:'6.78" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'6000 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Батарея 6000 мАч + ИИ-кнопка + IP65' },
+  'Infinix Hot 70|8/128': { brand:'Infinix', screen:'6.78" IPS 120Hz', ram:'8 GB', rom:'128 GB', battery:'6000 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Батарея 6000 мАч + ИИ-кнопка + IP65' },
+  'Infinix Hot 70|8/256': { brand:'Infinix', screen:'6.78" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Батарея 6000 мАч + ИИ-кнопка + IP65' },
+  'Infinix Hot 70 Pro|8/128': { brand:'Infinix', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5160 мАч, 45W', os:'Android 15 + XOS 15', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + зарядка 45 Вт' },
+  'Infinix Note 60|8/256': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP + 8 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Игровые антенны 360° + динамики JBL' },
+  'Infinix Note 60 Pro|12/256': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 144Hz', ram:'12 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP + 8 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'12 ГБ оперативы + динамики JBL' },
+  'Infinix Note Edge|8/128': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'128 GB', battery:'6150 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Dimensity 7100 + JBL + Gorilla Glass 7i' },
+  'Infinix Note Edge|8/256': { brand:'Infinix', screen:'6.78" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'256 GB', battery:'6150 мАч, 45W', os:'Android 16 + XOS 16', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'256 ГБ + Dimensity 7100 + JBL' },
+  'Infinix SMART 20|4/64': { brand:'Infinix', screen:'6.78" IPS 120Hz', ram:'4 GB', rom:'64 GB', battery:'5200 мАч, 15W', os:'Android 16 + XOS 16', mainCam:'8 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Самый доступный + батарея 5200 мАч' },
+  'Infinix Smart 10|4/128': { brand:'Infinix', screen:'6.67" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'5000 мАч, 15W', os:'Android 15 + XOS 15.1', mainCam:'8 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Стереодинамики DTS + защита IP64' },
+  'Infinix Zero 40|12/256': { brand:'Infinix', screen:'6.78" AMOLED 144Hz', ram:'12 GB', rom:'256 GB', battery:'5000 мАч, 45W', os:'Android 14 + XOS 14.5', mainCam:'108 MP OIS + 50 MP UW', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + камера 108 МП + фронт 50 МП' },
+  'Tecno Camon 30 CL7|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 70W', os:'Android 14 + HiOS 14', mainCam:'50 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Зарядка 70 Вт + AMOLED + фронт 50 МП' },
+  'Tecno Camon 30S|6/128': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч', os:'Android 14 + HiOS 14', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + камера 50 МП' },
+  'Tecno Camon 30S|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч', os:'Android 14 + HiOS 14', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + 8 ГБ RAM' },
+  'Tecno Camon 30S Pro|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч', os:'Android 14 + HiOS 14', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED + OIS + фронт 50 МП' },
+  'Tecno Camon 40|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED + OIS + 45 Вт' },
+  'Tecno Camon 40|12/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'12 ГБ оперативы + камера с OIS' },
+  'Tecno Camon 40 Pro CM6|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'Зарядка 70 Вт + AMOLED + OIS' },
+  'Tecno Camon 40 Pro CM7|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'Зарядка 70 Вт + AMOLED + OIS' },
+  'Tecno Camon 40 Pro CM7|12/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'5200 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'50 MP', port:'USB Type-C', highlight:'12 ГБ оперативы + зарядка 70 Вт' },
+  'Tecno Camon 50|12/256': { brand:'Tecno', screen:'6.78" AMOLED 1.5K 144Hz', ram:'12 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 15 + HiOS 16', mainCam:'50 MP OIS + 8 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + камера 50 МП OIS' },
+  'Tecno Camon 50|8/256': { brand:'Tecno', screen:'6.78" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 15 + HiOS 16', mainCam:'50 MP OIS + 8 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + камера 50 МП OIS' },
+  'Tecno Camon 50 Ultra|8/256': { brand:'Tecno', screen:'6.78" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 15 + HiOS 16', mainCam:'50 MP OIS', frontCam:'32 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + 8 ГБ RAM' },
+  'Tecno Camon 50 Ultra|12/256': { brand:'Tecno', screen:'6.78" AMOLED 1.5K 144Hz', ram:'12 GB', rom:'256 GB', battery:'6500 мАч, 45W', os:'Android 15 + HiOS 16', mainCam:'50 MP OIS', frontCam:'32 MP', port:'USB Type-C', highlight:'AMOLED 144 Гц + 12 ГБ RAM' },
+  'Tecno Pova 7|8/256': { brand:'Tecno', screen:'6.78" IPS 144Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'144 Гц + батарея 6000 мАч + беспроводная 30 Вт' },
+  'Tecno Pova 7 Neo|8/128': { brand:'Tecno', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED + 45 Вт' },
+  'Tecno Pova 7 Neo|8/256': { brand:'Tecno', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'AMOLED + 45 Вт + 256 ГБ' },
+  'Tecno Pova 7 Pro|8/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'13 MP', port:'USB Type-C', highlight:'Зарядка 70 Вт + AMOLED + OIS' },
+  'Tecno Pova 7 Pro|12/256': { brand:'Tecno', screen:'6.78" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'6000 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'50 MP OIS', frontCam:'13 MP', port:'USB Type-C', highlight:'12 ГБ оперативы + зарядка 70 Вт' },
+  'Tecno Pova 7 Ultra|8/256': { brand:'Tecno', screen:'6.67" AMOLED 1.5K 144Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 70W', os:'Android 15 + HiOS 15', mainCam:'108 MP + 8 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Зарядка 70 Вт + беспроводная 30 Вт' },
+  'Tecno Pova 8|8/128': { brand:'Tecno', screen:'6.76" IPS 144Hz', ram:'8 GB', rom:'128 GB', battery:'8000 мАч, 45W', os:'Android 16 + HiOS 16', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Батарея 8000 мАч + мини-экран Alive Matrix' },
+  'Tecno Pova 8|8/256': { brand:'Tecno', screen:'6.76" IPS 144Hz', ram:'8 GB', rom:'256 GB', battery:'8000 мАч, 45W', os:'Android 16 + HiOS 16', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Батарея 8000 мАч + мини-экран Alive Matrix' },
+  'Tecno Spark 30|8/128': { brand:'Tecno', screen:'6.78" IPS 90Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 18W', os:'Android 14 + HiOS 14', mainCam:'64 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Камера 64 МП Sony + IP64 + NFC' },
+  'Tecno Spark 30|8/256': { brand:'Tecno', screen:'6.78" IPS 90Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 18W', os:'Android 14 + HiOS 14', mainCam:'64 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Камера 64 МП Sony + 256 ГБ' },
+  'Tecno Spark 40|4/128': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Зарядка 45 Вт + ИИ-ассистент Ella' },
+  'Tecno Spark 40|8/128': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'128 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Зарядка 45 Вт + 8 ГБ RAM' },
+  'Tecno Spark 40|8/256': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'256 ГБ + зарядка 45 Вт' },
+  'Tecno Spark 40 Pro|8/128': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'128 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Зарядка 45 Вт + 8 ГБ RAM' },
+  'Tecno Spark 40 Pro|8/256': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'256 ГБ + зарядка 45 Вт' },
+  'Tecno Spark 40 Pro Plus|8/256': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'5200 мАч, 45W', os:'Android 15 + HiOS 15', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'256 ГБ + зарядка 45 Вт' },
+  'Tecno Spark 40C|4/128': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'5000 мАч, 18W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'120 Гц + 128 ГБ' },
+  'Tecno Spark 40C|8/128': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 18W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'120 Гц + 8 ГБ RAM' },
+  'Tecno Spark 40C|8/256': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 18W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'120 Гц + 256 ГБ' },
+  'Tecno Spark 50|4/128': { brand:'Tecno', screen:'6.78" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'6700 мАч, 18W', os:'Android 16 + HiOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'Батарея 6700 мАч + стереодинамики DTS' },
+  'Tecno Spark 50|6/128': { brand:'Tecno', screen:'6.78" IPS 120Hz', ram:'6 GB', rom:'128 GB', battery:'6700 мАч, 18W', os:'Android 16 + HiOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'Батарея 6700 мАч + 6 ГБ RAM' },
+  'Tecno Spark 50|8/128': { brand:'Tecno', screen:'6.78" IPS 120Hz', ram:'8 GB', rom:'128 GB', battery:'6700 мАч, 18W', os:'Android 16 + HiOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'8 ГБ оперативы + батарея 6700 мАч' },
+  'Tecno Spark 50|8/256': { brand:'Tecno', screen:'6.78" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'6700 мАч, 18W', os:'Android 16 + HiOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'256 ГБ + батарея 6700 мАч' },
+  'Tecno Spark Go 1|4/64': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'4 GB', rom:'64 GB', battery:'5000 мАч, 15W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Экран 120 Гц + 64 ГБ' },
+  'Tecno Spark Go 2|3/64': { brand:'Tecno', screen:'6.67" IPS 120Hz', ram:'3 GB', rom:'64 GB', battery:'5000 мАч, 10W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Самый бюджетный + батарея 5000 мАч' },
+  'Tecno Spark Go 3|4/64': { brand:'Tecno', screen:'6.74" IPS 120Hz', ram:'4 GB', rom:'64 GB', battery:'5000 мАч, 15W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Экран 120 Гц + защита IP64' },
+  'Tecno Spark Go 3|4/128': { brand:'Tecno', screen:'6.74" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'5000 мАч, 15W', os:'Android 15 Go', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'128 ГБ + экран 120 Гц + IP64' },
+  'Realme C100i|4/128': { brand:'Realme', screen:'6.8" IPS HD+ 120Hz, 900 нит', ram:'4 GB', rom:'128 GB', battery:'7000 мАч, 15W', os:'Android 16 + realme UI 7.0', mainCam:'8 MP, f/2.0', frontCam:'5 MP, f/2.2', port:'USB Type-C, 3.5 мм', highlight:'Батарея 7000 мАч + ArmorShell' },
+  'Realme C100i|4/64': { brand:'Realme', screen:'6.8" IPS HD+ 120Hz, 900 нит', ram:'4 GB', rom:'64 GB', battery:'7000 мАч, 15W', os:'Android 16 + realme UI 7.0', mainCam:'8 MP, f/2.0', frontCam:'5 MP, f/2.2', port:'USB Type-C, 3.5 мм', highlight:'Батарея 7000 мАч + ArmorShell' },
+  'Realme C100x|4/128': { brand:'Realme', screen:'6.8" IPS HD+ 120Hz, 900 нит', ram:'4 GB', rom:'128 GB', battery:'8000 мАч, 45W', os:'Android 16 + realme UI 7.0', mainCam:'50 MP, f/1.8', frontCam:'5 MP, f/2.2', port:'USB Type-C', highlight:'Батарея 8000 мАч + зарядка 45 Вт' },
+  'Realme C100x|4/256': { brand:'Realme', screen:'6.8" IPS HD+ 120Hz, 900 нит', ram:'4 GB', rom:'256 GB', battery:'8000 мАч, 45W', os:'Android 16 + realme UI 7.0', mainCam:'50 MP, f/1.8', frontCam:'5 MP, f/2.2', port:'USB Type-C', highlight:'Батарея 8000 мАч + 256 ГБ' },
+  'Realme C85|6/128': { brand:'Realme', screen:'6.8" IPS HD+ 144Hz, 1200 нит', ram:'6 GB', rom:'128 GB', battery:'7000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP Sony IMX852', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'IP69 Pro + 144 Гц + Titan Battery' },
+  'Realme C85|8/256': { brand:'Realme', screen:'6.8" IPS HD+ 144Hz, 1200 нит', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP Sony IMX852', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'IP69 Pro + 8 ГБ RAM' },
+  'Realme C85 Pro|6/128': { brand:'Realme', screen:'6.8" AMOLED FHD+ 120Hz, 4000 нит', ram:'6 GB', rom:'128 GB', battery:'7000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'AMOLED 4000 нит + IP69 Pro' },
+  'Realme C85 Pro|8/256': { brand:'Realme', screen:'6.8" AMOLED FHD+ 120Hz, 4000 нит', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'AMOLED 4000 нит + 8 ГБ RAM' },
+  'Realme Note 60x|3/64': { brand:'Realme', screen:'6.74" IPS 90Hz', ram:'3 GB', rom:'64 GB', battery:'5000 мАч, 10W', os:'Android 14 + realme UI', mainCam:'8 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'ArmorShell + батарея 5000 мАч' },
+  'Realme Note 60x|4/128': { brand:'Realme', screen:'6.74" IPS 90Hz', ram:'4 GB', rom:'128 GB', battery:'5000 мАч, 10W', os:'Android 14 + realme UI', mainCam:'8 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'ArmorShell + 128 ГБ' },
+  'Realme Note 70|6/128': { brand:'Realme', screen:'6.74" IPS 90Hz', ram:'6 GB', rom:'128 GB', battery:'6300 мАч, 15W', os:'Android 15 + realme UI', mainCam:'13 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 6300 мАч + ArmorShell' },
+  'Realme Note 80|4/64': { brand:'Realme', screen:'6.74" LCD HD+ 90Hz', ram:'4 GB', rom:'64 GB', battery:'6300 мАч, 15W', os:'Android 15 + realme UI', mainCam:'8 MP', frontCam:'5 MP', port:'USB Type-C, 3.5 мм', highlight:'Батарея 6300 мАч + ArmorShell' },
+  'Realme Note 80|4/128': { brand:'Realme', screen:'6.74" LCD HD+ 90Hz', ram:'4 GB', rom:'128 GB', battery:'6300 мАч, 15W', os:'Android 15 + realme UI', mainCam:'8 MP', frontCam:'5 MP', port:'USB Type-C, 3.5 мм', highlight:'128 ГБ + батарея 6300 мАч' },
+  'Realme C71|6/128': { brand:'Realme', screen:'6.67" LCD HD+ 120Hz', ram:'6 GB', rom:'128 GB', battery:'6300 мАч, 45W', os:'Android 15 + realme UI', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 6300 мАч + 45 Вт' },
+  'Realme C71|8/128': { brand:'Realme', screen:'6.67" LCD HD+ 120Hz', ram:'8 GB', rom:'128 GB', battery:'6300 мАч, 45W', os:'Android 15 + realme UI', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Батарея 6300 мАч + 8 ГБ RAM' },
+  'Realme C71|8/256': { brand:'Realme', screen:'6.67" LCD HD+ 120Hz', ram:'8 GB', rom:'256 GB', battery:'6300 мАч, 45W', os:'Android 15 + realme UI', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'256 ГБ + 45 Вт' },
+  'Realme C75|8/128': { brand:'Realme', screen:'6.72" IPS 90Hz', ram:'8 GB', rom:'128 GB', battery:'5828 мАч, 45W', os:'Android 14 + realme UI 5.0', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'Защита IP69 + зарядка 45 Вт' },
+  'Realme C75|8/256': { brand:'Realme', screen:'6.72" IPS 90Hz', ram:'8 GB', rom:'256 GB', battery:'5828 мАч, 45W', os:'Android 14 + realme UI 5.0', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C, 3.5 мм', highlight:'Защита IP69 + 256 ГБ' },
+  'Realme 14T|8/128': { brand:'Realme', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'6000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'5G + зарядка 45 Вт + AMOLED' },
+  'Realme 14T|8/256': { brand:'Realme', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 45W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'5G + 256 ГБ + AMOLED' },
+  'Realme 15|8/256': { brand:'Realme', screen:'6.57" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 60W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + зарядка 60 Вт' },
+  'Realme 15|12/256': { brand:'Realme', screen:'6.57" AMOLED 120Hz', ram:'12 GB', rom:'256 GB', battery:'7000 мАч, 60W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'12 ГБ RAM + AMOLED 120 Гц' },
+  'Realme 15 Pro|8/256': { brand:'Realme', screen:'6.78" AMOLED 144Hz', ram:'8 GB', rom:'256 GB', battery:'7100 мАч, 80W', os:'Android 15 + realme UI 6.0', mainCam:'200 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Камера 200 МП + зарядка 80 Вт' },
+  'Realme 16|8/256': { brand:'Realme', screen:'6.57" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 60W', os:'Android 15 + realme UI 6.0', mainCam:'50 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + зарядка 60 Вт' },
+  'Realme 16 Pro|8/256': { brand:'Realme', screen:'6.78" AMOLED 144Hz', ram:'8 GB', rom:'256 GB', battery:'7100 мАч, 80W', os:'Android 15 + realme UI 6.0', mainCam:'200 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Камера 200 МП + зарядка 80 Вт' },
+  'Realme 16 Pro Plus|8/256': { brand:'Realme', screen:'6.8" AMOLED 144Hz', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 80W', os:'Android 15 + realme UI 6.0', mainCam:'200 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'Камера 200 МП + 80 Вт' },
+  'Realme 16 Pro Plus|12/512': { brand:'Realme', screen:'6.8" AMOLED 144Hz', ram:'12 GB', rom:'512 GB', battery:'7000 мАч, 80W', os:'Android 15 + realme UI 6.0', mainCam:'200 MP', frontCam:'50 MP', port:'USB Type-C', highlight:'512 ГБ + 12 ГБ RAM + 200 МП' },
+  'Xiaomi REDMI 15|6/128': { brand:'Xiaomi', screen:'6.9" IPS 144Hz', ram:'6 GB', rom:'128 GB', battery:'7000 мАч, 33W', os:'Android 15 + HyperOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Батарея 7000 мАч + экран 144 Гц' },
+  'Xiaomi REDMI 15|8/256': { brand:'Xiaomi', screen:'6.9" IPS 144Hz', ram:'8 GB', rom:'256 GB', battery:'7000 мАч, 33W', os:'Android 15 + HyperOS', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'256 ГБ + батарея 7000 мАч' },
+  'Xiaomi REDMI 15C|4/128': { brand:'Xiaomi', screen:'6.9" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'6000 мАч, 33W', os:'Android 15 + HyperOS', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Защита IP64 + 120 Гц' },
+  'Xiaomi REDMI 15C|4/256': { brand:'Xiaomi', screen:'6.9" IPS 120Hz', ram:'4 GB', rom:'256 GB', battery:'6000 мАч, 33W', os:'Android 15 + HyperOS', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'256 ГБ + защита IP64' },
+  'Xiaomi REDMI 15C|8/256': { brand:'Xiaomi', screen:'6.9" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'6000 мАч, 33W', os:'Android 15 + HyperOS', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'8 ГБ RAM + 256 ГБ' },
+  'Xiaomi REDMI 17|4/128': { brand:'Xiaomi', screen:'6.88" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'7500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'5G + экран 120 Гц + батарея 7500 мАч' },
+  'Xiaomi REDMI 17|4/256': { brand:'Xiaomi', screen:'6.88" IPS 120Hz', ram:'4 GB', rom:'256 GB', battery:'7500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'5G + 256 ГБ + 7500 мАч' },
+  'Xiaomi REDMI 17|8/256': { brand:'Xiaomi', screen:'6.88" IPS 120Hz', ram:'8 GB', rom:'256 GB', battery:'7500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'5G + 8 ГБ RAM + 7500 мАч' },
+  'Xiaomi REDMI A5|4/128': { brand:'Xiaomi', screen:'6.88" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'5200 мАч, 15W', os:'Android 15 Go', mainCam:'32 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Самый доступный + камера 32 МП' },
+  'Xiaomi REDMI A7 Pro|4/64': { brand:'Xiaomi', screen:'6.9" IPS 120Hz', ram:'4 GB', rom:'64 GB', battery:'6000 мАч, 15W', os:'Android 16 + HyperOS 3', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'Большой экран 6.9" + 6000 мАч' },
+  'Xiaomi REDMI A7 Pro|4/128': { brand:'Xiaomi', screen:'6.9" IPS 120Hz', ram:'4 GB', rom:'128 GB', battery:'6000 мАч, 15W', os:'Android 16 + HyperOS 3', mainCam:'13 MP', frontCam:'8 MP', port:'USB Type-C', highlight:'128 ГБ + экран 6.9"' },
+  'Xiaomi REDMI Note 13|6/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч, 33W', os:'Android 13 + MIUI 14', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + камера 108 МП' },
+  'Xiaomi REDMI Note 13|8/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 33W', os:'Android 13 + MIUI 14', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'8 ГБ RAM + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 13|8/256': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 33W', os:'Android 13 + MIUI 14', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'256 ГБ + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 13 Pro|8/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5100 мАч, 67W', os:'Android 13 + MIUI 14', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'Камера 200 МП OIS + 67 Вт' },
+  'Xiaomi REDMI Note 13 Pro|8/256': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5100 мАч, 67W', os:'Android 13 + MIUI 14', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'256 ГБ + камера 200 МП' },
+  'Xiaomi REDMI Note 13 Pro|12/512': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'12 GB', rom:'512 GB', battery:'5100 мАч, 67W', os:'Android 13 + MIUI 14', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'512 ГБ + 12 ГБ RAM' },
+  'Xiaomi REDMI Note 13 Pro Plus|8/256': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 120W', os:'Android 13 + MIUI 14', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'Зарядка 120 Вт + камера 200 МП' },
+  'Xiaomi REDMI Note 13 Pro Plus|12/512': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'12 GB', rom:'512 GB', battery:'5000 мАч, 120W', os:'Android 13 + MIUI 14', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'512 ГБ + 120 Вт' },
+  'Xiaomi REDMI Note 14|6/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5500 мАч, 33W', os:'Android 14 + HyperOS', mainCam:'108 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + камера 108 МП' },
+  'Xiaomi REDMI Note 14|8/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5500 мАч, 33W', os:'Android 14 + HyperOS', mainCam:'108 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'8 ГБ RAM + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 14|8/256': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5500 мАч, 33W', os:'Android 14 + HyperOS', mainCam:'108 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'256 ГБ + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 14 Pro|8/256': { brand:'Xiaomi', screen:'6.67" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'256 GB', battery:'5110 мАч, 45W', os:'Android 14 + HyperOS', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'Камера 200 МП + AMOLED 1.5K' },
+  'Xiaomi REDMI Note 14 Pro|12/512': { brand:'Xiaomi', screen:'6.67" AMOLED 1.5K 120Hz', ram:'12 GB', rom:'512 GB', battery:'5110 мАч, 45W', os:'Android 14 + HyperOS', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'512 ГБ + 12 ГБ RAM' },
+  'Xiaomi REDMI Note 14S|8/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 67W', os:'Android 14 + HyperOS', mainCam:'200 MP OIS', frontCam:'16 MP', port:'USB Type-C', highlight:'Камера 200 МП OIS + 67 Вт' },
+  'Xiaomi REDMI Note 15|6/128': { brand:'Xiaomi', screen:'6.78" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5800 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + 45 Вт' },
+  'Xiaomi REDMI Note 15|8/128': { brand:'Xiaomi', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5800 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'8 ГБ RAM + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 15|8/256': { brand:'Xiaomi', screen:'6.78" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5800 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'256 ГБ + 45 Вт' },
+  'Xiaomi REDMI Note 15 Pro|8/256': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'256 GB', battery:'6580 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'Защита IP68 + батарея 6580 мАч' },
+  'Xiaomi REDMI Note 15 Pro|8/512': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'512 GB', battery:'6580 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'512 ГБ + IP68' },
+  'Xiaomi REDMI Note 15 Pro|12/256': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'12 GB', rom:'256 GB', battery:'6580 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'12 ГБ RAM + IP68' },
+  'Xiaomi REDMI Note 15 Pro|12/512': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'12 GB', rom:'512 GB', battery:'6580 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP OIS', frontCam:'20 MP', port:'USB Type-C', highlight:'512 ГБ + 12 ГБ RAM' },
+  'Xiaomi REDMI Note 15 Pro Plus|12/512': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'12 GB', rom:'512 GB', battery:'6500 мАч, 100W', os:'Android 15 + HyperOS 2', mainCam:'200 MP OIS', frontCam:'32 MP', port:'USB Type-C', highlight:'Зарядка 100 Вт + 512 ГБ' },
+  'Xiaomi REDMI Note 17|4/128': { brand:'Xiaomi', screen:'6.99" AMOLED 120Hz', ram:'4 GB', rom:'128 GB', battery:'7700 мАч, 45W', os:'Android 15 + HyperOS 6', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Экран AMOLED 120 Гц + 7700 мАч' },
+  'Xiaomi REDMI Note 17|6/256': { brand:'Xiaomi', screen:'6.99" AMOLED 120Hz', ram:'6 GB', rom:'256 GB', battery:'7700 мАч, 45W', os:'Android 15 + HyperOS 6', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'256 ГБ + AMOLED 120 Гц' },
+  'Xiaomi REDMI Note 17|8/256': { brand:'Xiaomi', screen:'6.99" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'7700 мАч, 45W', os:'Android 15 + HyperOS 6', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'8 ГБ RAM + 7700 мАч' },
+  'Xiaomi REDMI Note 17 Pro|6/128': { brand:'Xiaomi', screen:'6.88" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'Камера 200 МП + 45 Вт' },
+  'Xiaomi REDMI Note 17 Pro|8/256': { brand:'Xiaomi', screen:'6.88" AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'8 ГБ RAM + 200 МП' },
+  'Xiaomi REDMI Note 17 Pro|8/512': { brand:'Xiaomi', screen:'6.88" AMOLED 120Hz', ram:'8 GB', rom:'512 GB', battery:'5500 мАч, 45W', os:'Android 15 + HyperOS 2', mainCam:'200 MP', frontCam:'20 MP', port:'USB Type-C', highlight:'512 ГБ + 200 МП' },
+  'Xiaomi REDMI Note 17 Pro Max|8/256': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'256 GB', battery:'10000 мАч, 100W', os:'Android 15 + HyperOS 2', mainCam:'50 MP OIS + 8 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'Батарея 10000 мАч + IP68 + 100 Вт' },
+  'Xiaomi REDMI Note 17 Pro Max|8/512': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'8 GB', rom:'512 GB', battery:'10000 мАч, 100W', os:'Android 15 + HyperOS 2', mainCam:'50 MP OIS + 8 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'512 ГБ + 10000 мАч' },
+  'Xiaomi REDMI Note 17 Pro Max|12/256': { brand:'Xiaomi', screen:'6.83" AMOLED 1.5K 120Hz', ram:'12 GB', rom:'256 GB', battery:'10000 мАч, 100W', os:'Android 15 + HyperOS 2', mainCam:'50 MP OIS + 8 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'12 ГБ RAM + 10000 мАч' },
+  'Xiaomi Poco M5|6/128': { brand:'Xiaomi', screen:'6.58" IPS 90Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч, 18W', os:'Android 12 + MIUI 13', mainCam:'50 MP', frontCam:'5 MP', port:'USB Type-C', highlight:'Чип Helio G99 + Gorilla Glass' },
+  'Xiaomi Poco X5 Pro|6/128': { brand:'Xiaomi', screen:'6.67" AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч, 67W', os:'Android 12 + MIUI 14', mainCam:'108 MP', frontCam:'16 MP', port:'USB Type-C', highlight:'AMOLED 120 Гц + 67 Вт' },
+  'Xiaomi 17T|12/512': { brand:'Xiaomi', screen:'6.83" AMOLED 120Hz', ram:'12 GB', rom:'512 GB', battery:'5500 мАч, 90W', os:'Android 15 + HyperOS 2', mainCam:'50 MP', frontCam:'32 MP', port:'USB Type-C', highlight:'512 ГБ + 90 Вт' },
+  'Samsung Galaxy A08|4/64': { brand:'Samsung', screen:'6.7" PLS LCD 90Hz', ram:'4 GB', rom:'64 GB', battery:'5000 мАч, 25W', os:'Android 15 + One UI 7', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'Камера 50 МП + 5000 мАч' },
+  'Samsung Galaxy A08|6/128': { brand:'Samsung', screen:'6.7" PLS LCD 90Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч, 25W', os:'Android 15 + One UI 7', mainCam:'50 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'6 ГБ RAM + камера 50 МП' },
+  'Samsung Galaxy A17|4/128': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'4 GB', rom:'128 GB', battery:'5000 мАч', os:'Android 15 + One UI 7', mainCam:'50 MP OIS', frontCam:'13 MP', port:'USB Type-C', highlight:'Super AMOLED + OIS + 6 лет обновлений' },
+  'Samsung Galaxy A26|8/256': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч', os:'Android 15 + One UI 7', mainCam:'50 MP OIS + 8 MP + 2 MP', frontCam:'13 MP', port:'USB Type-C', highlight:'IP67 + 6 лет обновлений + OIS' },
+  'Samsung Galaxy A27|6/128': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'6 GB', rom:'128 GB', battery:'5000 мАч, 25W', os:'Android 15 + One UI 7', mainCam:'50 MP OIS', frontCam:'12 MP', port:'USB Type-C', highlight:'6 лет обновлений + Gemini AI + IP64' },
+  'Samsung Galaxy A27|8/256': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 25W', os:'Android 15 + One UI 7', mainCam:'50 MP OIS', frontCam:'12 MP', port:'USB Type-C', highlight:'8 ГБ RAM + 6 лет обновлений' },
+  'Samsung Galaxy A36|8/128': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'8 GB', rom:'128 GB', battery:'5000 мАч, 45W', os:'Android 15 + One UI 7', mainCam:'50 MP OIS + 8 MP + 5 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'IP67 + Gorilla Glass Victus+ + 45 Вт' },
+  'Samsung Galaxy A36|8/256': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 45W', os:'Android 15 + One UI 7', mainCam:'50 MP OIS + 8 MP + 5 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'256 ГБ + IP67 + 45 Вт' },
+  'Samsung Galaxy A56|8/256': { brand:'Samsung', screen:'6.7" Super AMOLED 120Hz', ram:'8 GB', rom:'256 GB', battery:'5000 мАч, 45W', os:'Android 15 + One UI 7', mainCam:'50 MP OIS + 12 MP + 5 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'6 лет обновлений + IP67 + 45 Вт' },
+  'Samsung Galaxy S26|12/256': { brand:'Samsung', screen:'6.3" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'256 GB', battery:'4300 мАч, 25W', os:'Android 16 + One UI 8.5', mainCam:'50 MP OIS + 10 MP + 12 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'Exynos 2600 + 120 Гц AMOLED' },
+  'Samsung Galaxy S26|12/512': { brand:'Samsung', screen:'6.3" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'512 GB', battery:'4300 мАч, 25W', os:'Android 16 + One UI 8.5', mainCam:'50 MP OIS + 10 MP + 12 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'512 ГБ + Exynos 2600' },
+  'Samsung Galaxy S26 Plus|12/256': { brand:'Samsung', screen:'6.7" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'256 GB', battery:'4900 мАч, 45W', os:'Android 16 + One UI 8.5', mainCam:'50 MP OIS + 10 MP + 12 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'QHD+ экран + 45 Вт' },
+  'Samsung Galaxy S26 Plus|12/512': { brand:'Samsung', screen:'6.7" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'512 GB', battery:'4900 мАч, 45W', os:'Android 16 + One UI 8.5', mainCam:'50 MP OIS + 10 MP + 12 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'512 ГБ + 45 Вт' },
+  'Samsung Galaxy S26 Ultra|12/256': { brand:'Samsung', screen:'6.9" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'256 GB', battery:'5000 мАч', os:'Android 16 + One UI 8.5', mainCam:'200 MP OIS + 50 MP + 50 MP + 10 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'200 МП + S Pen + Privacy Display' },
+  'Samsung Galaxy S26 Ultra|12/512': { brand:'Samsung', screen:'6.9" Dynamic AMOLED 2X 120Hz', ram:'12 GB', rom:'512 GB', battery:'5000 мАч', os:'Android 16 + One UI 8.5', mainCam:'200 MP OIS + 50 MP + 50 MP + 10 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'512 ГБ + S Pen' },
+  'Samsung Galaxy S26 Ultra|16/1TB': { brand:'Samsung', screen:'6.9" Dynamic AMOLED 2X 120Hz', ram:'16 GB', rom:'1 TB', battery:'5000 мАч', os:'Android 16 + One UI 8.5', mainCam:'200 MP OIS + 50 MP + 50 MP + 10 MP', frontCam:'12 MP', port:'USB Type-C', highlight:'1 ТБ + 16 ГБ RAM + S Pen' },
+  'Apple iPhone 17|8/256': { brand:'Apple', screen:'6.3" Super Retina XDR 120Hz', ram:'8 GB', rom:'256 GB', battery:'до 30 ч видео', os:'iOS 19', mainCam:'48 MP + 12 MP', frontCam:'18 MP', port:'USB Type-C', highlight:'Чип A19 + экран 120 Гц + батарея до 30 ч видео' },
+  'Apple iPhone 17 Pro|12/256': { brand:'Apple', screen:'6.3" Super Retina XDR 120Hz', ram:'12 GB', rom:'256 GB', battery:'до 31 ч видео', os:'iOS 19', mainCam:'48 MP + 48 MP + 48 MP', frontCam:'18 MP', port:'USB Type-C', highlight:'Чип A19 Pro + титановый корпус + камера 48 МП ×3' },
+  'Apple iPhone 17 Pro Max|12/256': { brand:'Apple', screen:'6.9" Super Retina XDR 120Hz', ram:'12 GB', rom:'256 GB', battery:'до 37 ч видео', os:'iOS 19', mainCam:'48 MP + 48 MP + 48 MP', frontCam:'18 MP', port:'USB Type-C', highlight:'Чип A19 Pro + 6.9" экран + батарея до 37 ч видео' }
+};
+
+/* ============================================================
+   2. ДОПЫ
+   ============================================================ */
+const ADDONS = [
+  { id: 'cyber12', name: 'КиберЗащита+', type: 'fixed', price: 2990, desc: 'Новейший антивирус с ИИ для защиты данных и счетов на Android.', features: ['Компенсация до 700 000 ₽', 'Защита банковских карт', 'Работает на 3-х устройствах'] },
+  { id: 'alfa_complex', name: 'Альфа Комплексная защита', type: 'percent', percent: 0.28, desc: 'Защита от поломок, кражи, залива и скачков напряжения. Продлевает гарантию производителя на 12 месяцев.', features: ['Ремонт или компенсация', 'Продление гарантии', 'Защита от кражи'] },
+  { id: 'sogaz_portable', name: 'СОГАЗ Портативная+', type: 'percent', percent: 0.20, desc: 'Механическая поломка, кража, скачок напряжения, повреждение водой. Защита на 2 или 3 года.', features: ['Защита от воды', 'Защита от падений', 'Защита от кражи'] },
+  { id: 'vsk_complex', name: 'ВСК Комплекс+', type: 'percent', percent: 0.40, desc: 'Защита и обмен техники. Возврат до 70% стоимости при поломке. Действует 24 месяца.', features: ['Возврат до 70% стоимости', 'Ремонт без ограничений', 'Срок действия 24 мес'] },
+  { id: 'vsk_super', name: 'ВСК Сверх Возм.', type: 'percent', percent: 0.28, desc: 'Комплексная защита + продление гарантии производителя.', features: ['Все риски', 'Продление гарантии', 'Защита от кражи'] },
+  { id: 'alfa_total', name: 'Альфа Тотальная защита', type: 'percent', percent: 0.40, desc: 'Защита от поломок, кражи, залива. Скидка на новое устройство до 70%.', features: ['Скидка на новое до 70%', 'Ремонт по любой причине', 'Страхование жизни'] },
+  { id: 'vsk_total', name: 'ВСК Тотал +', type: 'percent', percent: 0.35, desc: 'Комплексное страхование оборудования и жизни. Выплата 20 000 ₽ при несчастном случае.', features: ['Страхование жизни 20 000 ₽', 'Защита от поломок', 'Скидка на новое устройство'] },
+  { id: 'smart_protect', name: 'SmartProtect', type: 'percent', percent: 0.28, desc: 'Гарантия возврата до 70% стоимости на покупку нового устройства в течение года. Принимают даже без комплекта.', features: ['Возврат до 70%', 'Принимают без комплекта', 'Обмен в течение года'] }
+];
+
+let activeAddon = ADDONS[0].id;
+
+const REGION_META = {
+  'Барнаул': { emoji: '⚒️', sim3: 2400, sim12: 9150 },
+  'Брянск': { emoji: '💣', sim3: 2550, sim12: 9750 },
+  'Бурятия': { emoji: '🌊', sim3: 2700, sim12: 10350 },
+  'Владимир': { emoji: '🦁', sim3: 2550, sim12: 9750 },
+  'Воронеж': { emoji: '🦅', sim3: 2700, sim12: 10350 },
+  'Иваново': { emoji: '🧵', sim3: 2400, sim12: 9150 },
+  'Иркутск': { emoji: '🐯', sim3: 2700, sim12: 10350 },
+  'Калуга': { emoji: '🌊', sim3: 2400, sim12: 9150 },
+  'Кемерово': { emoji: '⚙️', sim3: 2700, sim12: 10350 },
+  'Красноярск': { emoji: '🦁', sim3: 2550, sim12: 9750 },
+  'Курск': { emoji: '🐦', sim3: 2700, sim12: 10350 },
+  'Москва': { emoji: '🏛️', sim3: 2400, sim12: 9150 },
+  'Новосибирск': { emoji: '🌉', sim3: 2400, sim12: 9150 },
+  'Саратов': { emoji: '🐟', sim3: 2250, sim12: 8550 },
+  'Томск Т2': { emoji: '🐎', sim3: 2550, sim12: 9750 },
+  'Тула': { emoji: '⚔️', sim3: 2550, sim12: 9750 },
+  'Хакасия': { emoji: '☀️', sim3: 2400, sim12: 9150 },
+  'Ярославль': { emoji: '🐻', sim3: 2400, sim12: 9150 }
+};
+
+function normalizeRegionName(rawName) {
+  const mapping = {
+    'Барнаул': 'Барнаул', 'Брянский': 'Брянск', 'Бурятский': 'Бурятия', 'Бурятия': 'Бурятия',
+    'Владимирский': 'Владимир', 'Воронежский': 'Воронеж', 'Ивановский': 'Иваново',
+    'Иркутск': 'Иркутск', 'Калуга': 'Калуга', 'Кемерово': 'Кемерово', 'Красноярск': 'Красноярск',
+    'Курский': 'Курск', 'Москва': 'Москва', 'Новосибирск': 'Новосибирск', 'Саратовский': 'Саратов',
+    'Томск Т2': 'Томск Т2', 'Тула': 'Тула', 'Хакасия': 'Хакасия', 'Ярославский': 'Ярославль'
+  };
+  return mapping[rawName] || rawName;
+}
+
+let REGIONS_DATA = {};
+let activeRegion = null;
+let activeTT = null;
+let activeView = 'stock';
+let currentRegionData = null;
+
+// ПАРСЕР (Адаптирован под сдвиг на 1 столбец и новый формат памяти)
+function parseExcelData(json) {
+  const regions = {};
+  let currentRegion = null;
+  let currentShop = null;
+  
+  json.forEach(row => {
+    if (!row || row.length === 0) return;
+    
+    // ВАЖНО: Данные в столбце B (индекс 1) и C (индекс 2), столбец A (индекс 0) пустой
+    const colA = String(row[1] || '').trim(); 
+    const colB = String(row[2] || '').trim();
+    const colC = String(row[3] || '').trim();
+    
+    if (!colA) return;
+    if (colA === 'Склад.Филиал' || colA === 'Склад' || colA === 'Номенклатура' || colA === 'Итог') return;
+    
+    // Регион
+    if (colA && !colA.includes(',') && !colA.includes('Салон') && !colA.includes('Склад') && colA.length < 40) {
+      const normalized = normalizeRegionName(colA);
+      currentRegion = normalized;
+      if (!regions[currentRegion]) {
+        const meta = REGION_META[currentRegion] || { emoji: '📍', sim3: 2400, sim12: 9150 };
+        regions[currentRegion] = { rawName: colA, emoji: meta.emoji, sim3: meta.sim3, sim12: meta.sim12, points: [], stock: {} };
+      }
+      currentShop = null;
+      return;
+    }
+    
+    // Магазин
+    if (colA.includes('Салон') || colA.includes('Склад') || colA.includes('Теле2')) {
+      if (colA.includes('Старт') || colA.includes('Подтоварка')) return;
+      if (currentRegion) {
+        currentShop = colA;
+        if (!regions[currentRegion].points.includes(currentShop)) regions[currentRegion].points.push(currentShop);
+      }
+      return;
+    }
+    
+    // Смартфон
+    if (colA.startsWith('Смартфон') && currentRegion && currentShop) {
+      const cleaned = colA.replace(/^Смартфон\s+/, '');
+      // Пример: Honor X5d Plus 2026 4Gb/128Gb 4G midnight black/черный
+      const match = cleaned.match(/^(.+?)\s+(\d{4})\s+(\d+Gb\/\d+Gb)\s+\d+G\s+(.+?)(?:\s+!)?$/);
+      if (match) {
+        const fullName = match[1].trim();
+        const memory = match[3].replace(/Gb/g, ''); // 4Gb/128Gb -> 4/128
+        const spaceIdx = fullName.indexOf(' ');
+        const brand = spaceIdx > 0 ? fullName.substring(0, spaceIdx) : fullName;
+        const model = spaceIdx > 0 ? fullName.substring(spaceIdx + 1) : '';
+        const price = parseFloat(colC) || 0;
+        const qty = parseFloat(colB) || 0;
+        
+        if (qty > 0) {
+          const key = `${brand} ${model}|${memory}`;
+          if (!regions[currentRegion].stock[currentShop]) regions[currentRegion].stock[currentShop] = {};
+          if (!regions[currentRegion].stock[currentShop][key]) {
+            regions[currentRegion].stock[currentShop][key] = { brand, model, memory, price, qty: 0, colors: {} };
+          }
+          regions[currentRegion].stock[currentShop][key].qty += qty;
+          
+          const colorStr = (match[4] || '').toLowerCase();
+          let colorCode = 'other';
+          if (colorStr.includes('black') || colorStr.includes('черный') || colorStr.includes('чёрный')) colorCode = 'black';
+          else if (colorStr.includes('white') || colorStr.includes('белый')) colorCode = 'white';
+          else if (colorStr.includes('blue') || colorStr.includes('синий') || colorStr.includes('голубой')) colorCode = 'blue';
+          else if (colorStr.includes('gray') || colorStr.includes('серый') || colorStr.includes('grey')) colorCode = 'gray';
+          else if (colorStr.includes('purple') || colorStr.includes('фиолетовый') || colorStr.includes('сиреневый')) colorCode = 'purple';
+          else if (colorStr.includes('green') || colorStr.includes('зеленый') || colorStr.includes('зелёный')) colorCode = 'green';
+          else if (colorStr.includes('silver') || colorStr.includes('серебристый')) colorCode = 'silver';
+          else if (colorStr.includes('titanium') || colorStr.includes('титановый')) colorCode = 'titanium';
+          else if (colorStr.includes('gold') || colorStr.includes('золотой')) colorCode = 'gold';
+          else if (colorStr.includes('orange') || colorStr.includes('оранжевый')) colorCode = 'orange';
+          else if (colorStr.includes('beige') || colorStr.includes('бежевый')) colorCode = 'beige';
+          else if (colorStr.includes('brown') || colorStr.includes('коричневый')) colorCode = 'brown';
+          else if (colorStr.includes('violet')) colorCode = 'violet';
+          else if (colorStr.includes('graphite') || colorStr.includes('графит')) colorCode = 'graphite';
+          
+          regions[currentRegion].stock[currentShop][key].colors[colorCode] = (regions[currentRegion].stock[currentShop][key].colors[colorCode] || 0) + qty;
+        }
+      }
+    }
+  });
+  return regions;
+}
+
+/* ============================================================
+   АВТОЗАГРУЗКА ИЗ GOOGLE SHEETS (JSONP через тег script)
+   ============================================================ */
+const GOOGLE_SHEET_ID = '16Oy2OVJbq4UFrLs56F1euf2FXVfeYOGcVhPXOcorzYQ';
+const GOOGLE_SHEET_GID = '1511275418';
+
+function loadFromGoogleSheets() {
+  window.handleGVizData = function(gvizResponse) {
+    try {
+      if (gvizResponse.status === 'error') {
+        console.error('GViz error:', gvizResponse.errors);
+        throw new Error('Ошибка Google: ' + (gvizResponse.errors?.[0]?.detailed_message || 'access_denied'));
+      }
+
+      const table = gvizResponse.table;
+      const rows = [];
+
+      if (table.cols) {
+        rows.push(table.cols.map(col => col.label || ''));
+      }
+
+      if (table.rows) {
+        table.rows.forEach(row => {
+          const rowData = row.c.map(cell => {
+            if (!cell) return '';
+            return cell.v !== null && cell.v !== undefined ? cell.v : '';
+          });
+          rows.push(rowData);
+        });
+      }
+
+      REGIONS_DATA = parseExcelData(rows);
+
+      if (Object.keys(REGIONS_DATA).length === 0) {
+        showDebug(rows);
+        return;
+      }
+
+      document.getElementById('view-loading').classList.remove('active');
+      document.getElementById('view-regions').classList.add('active');
+      renderRegions();
+
+    } catch (err) {
+      console.error('Ошибка парсинга GViz данных:', err);
+      showError('Не удалось разобрать данные из Google Таблицы. ' + err.message);
+    }
+  };
+
+  const script = document.createElement('script');
+  script.src = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:handleGVizData&gid=${GOOGLE_SHEET_GID}&headers=0`;
+  
+  script.onerror = function() {
+    console.error('Не удалось загрузить скрипт GViz');
+    showError('Не удалось подключиться к Google Таблице. Проверьте интернет-соединение или доступ к docs.google.com.');
+  };
+  
+  document.head.appendChild(script);
+}
+
+function showError(message) {
+  const loadingScreen = document.querySelector('#view-loading .loading-screen');
+  if (loadingScreen) {
+    loadingScreen.innerHTML = `
+      <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
+      <h1 class="loading-title">Не удалось загрузить данные</h1>
+      <p class="loading-sub" style="max-width:600px;line-height:1.6;">
+        ${message}<br><br>
+        <span style="font-size:12px;opacity:0.7;">Проверьте, что Google Таблица открыта для просмотра («Все, у кого есть ссылка»).</span>
+      </p>
+    `;
+  }
+}
+
+function showDebug(rows) {
+  const loadingScreen = document.querySelector('#view-loading .loading-screen');
+  if (loadingScreen) {
+    let tableHtml = '<table><thead><tr>';
+    for (let i=0; i<4; i++) tableHtml += `<th>Столбец ${i+1}</th>`;
+    tableHtml += '</tr></thead><tbody>';
+    
+    rows.slice(0, 10).forEach(row => {
+      tableHtml += '<tr>';
+      for (let i=0; i<4; i++) {
+        const val = row[i] !== undefined ? String(row[i]) : '';
+        tableHtml += `<td>${val || '<span style="color:#888">(пусто)</span>'}</td>`;
+      }
+      tableHtml += '</tr>';
+    });
+    tableHtml += '</tbody></table>';
+
+    loadingScreen.innerHTML = `
+      <h1 class="loading-title" style="color:#ff4757">Данные получены, но не распознаны</h1>
+      <p class="loading-sub">Структура вашей таблицы отличается от того, что ожидает код.<br>Вот первые 10 строк, которые увидел калькулятор:</p>
+      <div class="debug-panel">
+        ${tableHtml}
+      </div>
+      <p class="loading-sub" style="margin-top:20px;">Пожалуйста, сделайте скриншот этой таблицы и отправьте в чат.</p>
+    `;
+  }
+}
+
+loadFromGoogleSheets();
+
+/* ============================================================
+   5. ЛОГИКА СКИДОК
+   ============================================================ */
+function determineDiscount(brand, modelName, price) {
+  if (brand === 'Tecno' && modelName.includes('Camon 50') && !modelName.includes('Ultra')) return 0.35;
+  if (brand === 'Tecno' && modelName.includes('Pova 8')) return 0.30;
+  if (brand === 'Apple') return 0.15;
+  if (brand === 'Infinix') return 0.30;
+  const realmeCoreModels = ['C100i', 'C100x', 'C85', 'C85 Pro'];
+  if (brand === 'Realme' && realmeCoreModels.some(m => modelName.includes(m))) return 0.30;
+  const samsungCombo30 = ['Galaxy A27'];
+  if (brand === 'Samsung' && samsungCombo30.some(m => modelName.includes(m))) return 0.30;
+  return price > 15000 ? 0.20 : 0.25;
+}
+
+function calcCombo(price, discount, addonId, isApple, regionData) {
+  const sim3Price = regionData.sim3;
+  const sim12Price = regionData.sim12;
+  let sim, simName;
+  if (isApple) { sim = sim12Price; simName = 'SIM t2 Мой Онлайн+ 12мес КОМБО'; }
+  else { sim = sim3Price; simName = 'SIM t2 Мой Онлайн+ 3мес КОМБО'; }
+  let addon = ADDONS.find(a => a.id === addonId) || ADDONS[0];
+
+  const cyberBlocked = addon.id.includes('cyber') && (isApple || price >= 40000);
+
+  if (cyberBlocked) {
+    return {
+      phoneCombo: price, sim, simName,
+      addon: 0,
+      addonName: isApple ? 'КиберЗащита недоступна' : 'КиберЗащита недоступна (цена ≥ 40 000 ₽)',
+      total: price + sim,
+      benefit: -sim,
+      noDiscount: true
+    };
+  }
+
+  let addonPrice = addon.type === 'fixed'
+    ? (addon.id === 'cyber12' && price >= 25000 ? 4990 : addon.price)
+    : Math.round(price * addon.percent);
+  const phoneCombo = Math.round(price * (1 - discount));
+  const total = phoneCombo + sim + addonPrice;
+  return { phoneCombo, sim, simName, addon: addonPrice, addonName: addon.name, total, benefit: price - total, noDiscount: false };
+}
+
+/* ============================================================
+   6. NAVIGATION
+   ============================================================ */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeView = btn.dataset.view;
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + activeView).classList.add('active');
+    if (activeView === 'stock') {
+      document.getElementById('controlsGrid').style.display = 'grid';
+      document.getElementById('kpiBar').style.display = 'grid';
+    } else {
+      document.getElementById('controlsGrid').style.display = 'none';
+      document.getElementById('kpiBar').style.display = 'none';
+    }
+  });
+});
+
+function goToRegions(e) {
+  if (e) e.preventDefault();
+  activeRegion = null; activeTT = null; activeView = 'stock';
+  document.getElementById('mainNav').style.display = 'none';
+  document.getElementById('backBtn').style.display = 'none';
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  if (Object.keys(REGIONS_DATA).length > 0) document.getElementById('view-regions').classList.add('active');
+  else document.getElementById('view-loading').classList.add('active');
+  document.getElementById('controlsGrid').style.display = 'none';
+  document.getElementById('kpiBar').style.display = 'none';
+}
+
+/* ============================================================
+   7. RENDER: REGIONS
+   ============================================================ */
+function renderRegions() {
+  const grid = document.getElementById('regionGrid');
+  grid.innerHTML = Object.keys(REGIONS_DATA).map(region => {
+    const data = REGIONS_DATA[region];
+    let total = 0;
+    const discounts = { '30': 0, '35': 0, '20': 0, '25': 0, '15': 0 };
+    Object.values(data.stock).forEach(shopItems => {
+      Object.values(shopItems).forEach(item => {
+        total += item.qty;
+        const disc = determineDiscount(item.brand, item.model, item.price);
+        const discKey = String(Math.round(disc * 100));
+        if (discounts[discKey] !== undefined) discounts[discKey] += item.qty;
+      });
+    });
+    const combo30_35 = discounts['30'] + discounts['35'];
+    return `<div class="region-card" data-region="${region}">
+      <div class="region-card__header"><span class="region-card__emoji">${data.emoji}</span><div class="region-card__name">${region}</div></div>
+      <div class="region-card__total">Всего: <b>${total.toLocaleString('ru-RU')}</b> ед.</div>
+      <div class="region-card__discounts">
+        <div class="discount-chip discount-chip--30 ${combo30_35 > 0 ? '' : 'hidden'}"><span class="discount-chip__label">30% / 35%</span><span class="discount-chip__value">${combo30_35}</span></div>
+        <div class="discount-chip discount-chip--20 ${discounts['20'] > 0 ? '' : 'hidden'}"><span class="discount-chip__label">20%</span><span class="discount-chip__value">${discounts['20']}</span></div>
+        <div class="discount-chip discount-chip--25 ${discounts['25'] > 0 ? '' : 'hidden'}"><span class="discount-chip__label">25%</span><span class="discount-chip__value">${discounts['25']}</span></div>
+        <div class="discount-chip discount-chip--15 ${discounts['15'] > 0 ? '' : 'hidden'}"><span class="discount-chip__label">15%</span><span class="discount-chip__value">${discounts['15']}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.region-card').forEach(card => {
+    card.addEventListener('click', () => {
+      activeRegion = card.dataset.region;
+      currentRegionData = REGIONS_DATA[activeRegion];
+      document.getElementById('mainNav').style.display = 'flex';
+      document.getElementById('backBtn').style.display = 'block';
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById('view-stock').classList.add('active');
+      document.getElementById('controlsGrid').style.display = 'grid';
+      document.getElementById('kpiBar').style.display = 'grid';
+      if (currentRegionData.points.length > 0) activeTT = currentRegionData.points[0];
+      renderAll();
+      renderPresentation();
+    });
+  });
+}
+
+/* ============================================================
+   8. RENDER: CONTROLS
+   ============================================================ */
+function renderControls() {
+  if (!currentRegionData) return;
+  const ttList = document.getElementById('ttList');
+  ttList.innerHTML = currentRegionData.points.map(tt => {
+    const items = currentRegionData.stock[tt] ? Object.values(currentRegionData.stock[tt]) : [];
+    const total = items.reduce((s, it) => s + it.qty, 0);
+    return `<button class="tt-item ${tt === activeTT ? 'active' : ''}" data-tt="${tt}">${tt}<span class="tt-item__count">${total}</span></button>`;
+  }).join('');
+  ttList.querySelectorAll('.tt-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTT = btn.dataset.tt;
+      closeDetail();
+      renderAll();
+    });
+  });
+  const addonGrid = document.getElementById('addonGrid');
+  addonGrid.innerHTML = ADDONS.map(a => {
+    let meta = a.type === 'percent' ? `${Math.round(a.percent * 100)}%` : `${a.price} ₽`;
+    return `<button class="addon-chip ${a.id === activeAddon ? 'active' : ''}" data-addon="${a.id}"><span class="addon-chip__name">${a.name}</span><span class="addon-chip__meta">${meta}</span></button>`;
+  }).join('');
+  addonGrid.querySelectorAll('.addon-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeAddon = btn.dataset.addon;
+      renderControls(); renderAll(); renderPresentation();
+    });
+  });
+  const descPanel = document.getElementById('descPanel');
+  const addon = ADDONS.find(a => a.id === activeAddon) || ADDONS[0];
+  let badge = addon.type === 'percent' ? `${Math.round(addon.percent * 100)}%` : 'Фикс. цена';
+  descPanel.innerHTML = `<div class="desc-title">${addon.name} <span>${badge}</span></div><div class="desc-text">${addon.desc}</div><ul class="desc-features">${addon.features.map(f => `<li>${f}</li>`).join('')}</ul>`;
+}
+
+/* ============================================================
+   9. RENDER: KPI
+   ============================================================ */
+function renderKPI(){
+  if (!currentRegionData) return;
+  const items = currentRegionData.stock[activeTT] ? Object.values(currentRegionData.stock[activeTT]) : [];
+  const total = items.reduce((s, it) => s + it.qty, 0);
+  let combo30 = 0, comboOther = 0;
+  items.forEach(it => {
+    const disc = determineDiscount(it.brand, it.model, it.price);
+    if (disc === 0.30 || disc === 0.35) combo30 += it.qty; else comboOther += it.qty;
+  });
+  document.getElementById('kpiTT').textContent = activeTT || '—';
+  document.getElementById('kpiTotal').textContent = total;
+  document.getElementById('kpiCombo30').textContent = combo30;
+  document.getElementById('kpiComboOther').textContent = comboOther;
+}
+
+/* ============================================================
+   10. RENDER: CONTENT
+   ============================================================ */
+function renderContent(){
+  const content = document.getElementById('content');
+  if (!currentRegionData) { content.innerHTML = `<div class="empty-state">Сначала выберите регион</div>`; return; }
+  const items = currentRegionData.stock[activeTT] ? Object.values(currentRegionData.stock[activeTT]) : [];
+  if (items.length === 0){ content.innerHTML = `<div class="empty-state">Нет остатков по точке «${activeTT}»</div>`; return; }
+  const groups = {};
+  items.forEach(it => {
+    const disc = determineDiscount(it.brand, it.model, it.price);
+    const badge = Math.round(disc * 100) + '%';
+    if (!groups[disc]) groups[disc] = { title: `Комбо ${badge}`, badge: badge, items: [] };
+    groups[disc].items.push(it);
+  });
+  const sortedKeys = Object.keys(groups).map(Number).sort((a, b) => b - a);
+  let html = '';
+  sortedKeys.forEach(disc => {
+    const grp = groups[disc];
+    grp.items.sort((a,b) => a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model) || a.memory.localeCompare(b.memory));
+    const totalQty = grp.items.reduce((s, it) => s + it.qty, 0);
+    const rows = grp.items.map(it => {
+      const specKey = `${it.brand} ${it.model}|${it.memory}`;
+      const colorEntries = Object.entries(it.colors).sort((a,b) => b[1] - a[1]);
+      const colorDots = colorEntries.map(([color, qty]) => `<span class="color-dot color-dot--${color}" title="${color}: ${qty}"></span>`).join('');
+      const combo = calcCombo(it.price, disc, activeAddon, it.brand === 'Apple', currentRegionData);
+      let benefitHtml = combo.noDiscount 
+        ? `<span class="benefit-pill benefit-pill--neg" style="font-size:11px;">${it.price >= 40000 ? 'Только страховка' : 'Нужна страховка'}</span>`
+        : (combo.benefit >= 0 
+          ? `<span class="benefit-pill benefit-pill--pos"><span class="benefit-pill__sticker">Выгодно!</span>+${combo.benefit.toLocaleString('ru-RU')} ₽</span>`
+          : `<span class="benefit-pill benefit-pill--neg">${combo.benefit.toLocaleString('ru-RU')} ₽</span>`);
+      return `<tr class="stock-row" data-spec-key="${specKey}">
+        <td><div class="stock-row__name">${it.brand} ${it.model}</div><div class="stock-row__memory">${it.memory}</div></td>
+        <td class="stock-row__colors">${colorDots}<span class="color-count">${colorEntries.length}</span></td>
+        <td class="stock-row__qty ${it.qty <= 2 ? 'stock-row__qty--low' : ''}">${it.qty}</td>
+        <td class="stock-row__price">${it.price.toLocaleString('ru-RU')} ₽</td>
+        <td class="benefit-cell">${benefitHtml}</td>
+        <td style="text-align:center"><button class="stock-row__btn">Подробнее</button></td>
+      </tr>`;
+    }).join('');
+    html += `<section class="combo-section">
+      <div class="combo-section__header"><span class="combo-section__title">${grp.title}</span><span class="combo-section__badge">${grp.badge}</span><span class="combo-section__count">${totalQty} ед. · ${grp.items.length} моделей</span></div>
+      <div class="table-wrap">
+        <table class="stock-table">
+          <thead><tr><th>Модель</th><th style="text-align:center">Цвета</th><th style="text-align:center">Кол-во</th><th style="text-align:center">Базовая цена</th><th style="text-align:center">Разница с голым</th><th style="text-align:center"></th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </section>`;
+  });
+  content.innerHTML = html;
+  content.querySelectorAll('.stock-row').forEach(row => {
+    row.addEventListener('click', () => openDetail(row.dataset.specKey, row));
+  });
+}
+
+/* ============================================================
+   11. RENDER: PRESENTATION
+   ============================================================ */
+function renderPresentation(){
+  const presContent = document.getElementById('presContent');
+  if (!currentRegionData) { presContent.innerHTML = `<div class="empty-state">Сначала выберите регион</div>`; return; }
+  const allModelKeys = new Set();
+  Object.values(currentRegionData.stock).forEach(ttItems => { Object.keys(ttItems).forEach(key => allModelKeys.add(key)); });
+  const models = Array.from(allModelKeys).map(key => {
+    const [nameMem, mem] = key.split('|');
+    const [brand, ...modelParts] = nameMem.split(' ');
+    const model = modelParts.join(' ');
+    let price = 0;
+    for (const shop in currentRegionData.stock) { if (currentRegionData.stock[shop][key]) { price = currentRegionData.stock[shop][key].price; break; } }
+    const discount = determineDiscount(brand, model, price);
+    const spec = SPECS[key] || { brand, highlight:'Характеристики уточняются' };
+    return { key, brand, model, mem, price, discount, spec };
+  });
+  const groups = {};
+  models.forEach(m => { const badge = Math.round(m.discount * 100); if (!groups[badge]) groups[badge] = []; groups[badge].push(m); });
+  const sortedDiscounts = Object.keys(groups).map(Number).sort((a, b) => b - a);
+  let sectionsHtml = '';
+  sortedDiscounts.forEach(disc => {
+    const groupModels = groups[disc];
+    if (groupModels.length === 0) return;
+    groupModels.sort((a,b) => a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model) || a.mem.localeCompare(b.mem));
+    const cards = groupModels.map(m => {
+      const combo = calcCombo(m.price, m.discount, activeAddon, m.brand === 'Apple', currentRegionData);
+      const priceString = combo.noDiscount ? `<span style="color:var(--benefit-neg); font-size:11px;">Только страховка</span>` : `По комбо: <b>${combo.phoneCombo.toLocaleString('ru-RU')} ₽</b>`;
+      return `<div class="pres-card" data-spec-key="${m.key}">
+        <div class="pres-card__brand">${m.brand}</div>
+        <div class="pres-card__name">${m.model}</div>
+        <div class="pres-card__memory">${m.mem}</div>
+        <div class="pres-card__price">${m.price.toLocaleString('ru-RU')} ₽</div>
+        <div class="pres-card__price-old">${priceString}</div>
+      </div>`;
+    }).join('');
+    sectionsHtml += `<section class="discount-section">
+      <div class="discount-section__header"><span class="discount-section__badge">−${disc}%</span><span class="discount-section__title">Комбо ${disc}%</span><span class="discount-section__count">${groupModels.length} моделей</span></div>
+      <div class="pres-grid">${cards}</div>
+    </section>`;
+  });
+  presContent.innerHTML = `
+    <div class="pres-hero">
+      <h1 class="pres-hero__title">Скидка на <span>смартфоны</span><br>при покупке в комбо</h1>
+      <p class="pres-hero__sub">Купи смартфон + SIM t2 + любой продукт защиты — получи скидку от 15% до 35%</p>
+      <div class="pres-hero__formula"><b>Смартфон</b><span class="plus">+</span><b>SIM t2 Мой Онлайн+</b><span class="plus">+</span><b>Защита</b><span class="plus">=</span><b>скидка 15% – 35%</b></div>
+    </div>${sectionsHtml}`;
+  presContent.querySelectorAll('.pres-card').forEach(card => {
+    card.addEventListener('click', () => openDetail(card.dataset.specKey, card));
+  });
+}
+
+/* ============================================================
+   12. DETAIL PANEL
+   ============================================================ */
+function openDetail(specKey, sourceEl){
+  let spec = SPECS[specKey];
+  if (!spec) {
+    const [nameMem, mem] = specKey.split('|');
+    const [brand] = nameMem.split(' ');
+    spec = { brand, screen:'—', ram: mem.split('/')[0]+' GB', rom: mem.split('/')[1]+' GB', battery:'—', os:'—', mainCam:'—', frontCam:'—', port:'—', highlight:'Характеристики уточняются' };
+  }
+  const [nameMem, mem] = specKey.split('|');
+  let rawItem = null;
+  for (const shop in currentRegionData.stock) { if (currentRegionData.stock[shop][specKey]) { rawItem = currentRegionData.stock[shop][specKey]; break; } }
+  if (!rawItem) return;
+  const brand = rawItem.brand, model = rawItem.model, price = rawItem.price;
+  const discount = determineDiscount(brand, model, price);
+  const isApple = brand === 'Apple';
+  const combo = calcCombo(price, discount, activeAddon, isApple, currentRegionData);
+
+  const cyberBlocked = activeAddon.includes('cyber') && (isApple || price >= 40000);
+  document.getElementById('detailTitle').textContent = `${brand} ${model} ${mem}`;
+  document.getElementById('detailBadge').textContent = cyberBlocked ? `КиберЗащита недоступна` : `Комбо ${Math.round(discount*100)}%`;
+
+  let calcHtml = '';
+  if (combo.noDiscount) {
+    calcHtml = `
+      <div class="calc-row"><span class="calc-row__label">Базовая цена</span><span class="calc-row__value">${price.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row"><span class="calc-row__label">${combo.simName}</span><span class="calc-row__value">${combo.sim.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row"><span class="calc-row__label">${combo.addonName}</span><span class="calc-row__value">0 ₽</span></div>
+      <div class="calc-row calc-row--total"><span class="calc-row__label">ИТОГО</span><span class="calc-row__value">${combo.total.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-benefit calc-benefit--neg"><span class="calc-benefit__label">Внимание</span><span class="calc-benefit__value" style="font-size:13px;">Нужна страховка (не КиберЗащита)</span></div>`;
+  } else {
+    let benefitBlock = combo.benefit >= 0
+      ? `<div class="calc-benefit"><span class="calc-benefit__label"><span class="calc-benefit__sticker">Выгодно!</span>Разница с голым</span><span class="calc-benefit__value">+${combo.benefit.toLocaleString('ru-RU')} ₽</span></div>`
+      : `<div class="calc-benefit calc-benefit--neg"><span class="calc-benefit__label">Разница с голым</span><span class="calc-benefit__value">${combo.benefit.toLocaleString('ru-RU')} ₽</span></div>`;
+    calcHtml = `
+      <div class="calc-row"><span class="calc-row__label">Базовая цена</span><span class="calc-row__value">${price.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row"><span class="calc-row__label">Смартфон по комбо (−${Math.round(discount*100)}%)</span><span class="calc-row__value">${combo.phoneCombo.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row"><span class="calc-row__label">${combo.simName}</span><span class="calc-row__value">${combo.sim.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row"><span class="calc-row__label">${combo.addonName}</span><span class="calc-row__value">${combo.addon.toLocaleString('ru-RU')} ₽</span></div>
+      <div class="calc-row calc-row--total"><span class="calc-row__label">ИТОГО по комбо</span><span class="calc-row__value">${combo.total.toLocaleString('ru-RU')} ₽</span></div>
+      ${benefitBlock}`;
+  }
+  const intro = {'Honor':'Honor — это надёжность.','Xiaomi':'Xiaomi даёт максимум за свои деньги.','Apple':'iPhone — это эталон.','Realme':'Realme — баланс цены и качества.','Infinix':'Infinix — много функций.','Tecno':'Tecno — стильный дизайн.','Samsung':'Samsung — проверенное качество.'}[brand] || 'Отличный смартфон.';
+  const script = `${intro} У этой модели ${spec.highlight.toLowerCase()}. По комбо вы получаете дополнительную скидку — это выгоднее, чем покупать смартфон отдельно.`;
+  const body = document.getElementById('detailBody');
+  body.innerHTML = `
+    <div class="specs-grid">
+      <div class="spec-item spec-item--full"><span class="spec-item__label">Экран</span><span class="spec-item__value">${spec.screen}</span></div>
+      <div class="spec-item"><span class="spec-item__label">RAM</span><span class="spec-item__value">${spec.ram}</span></div>
+      <div class="spec-item"><span class="spec-item__label">ROM</span><span class="spec-item__value">${spec.rom}</span></div>
+      <div class="spec-item"><span class="spec-item__label">Батарея</span><span class="spec-item__value">${spec.battery}</span></div>
+      <div class="spec-item"><span class="spec-item__label">ОС</span><span class="spec-item__value">${spec.os}</span></div>
+      <div class="spec-item"><span class="spec-item__label">Осн. камера</span><span class="spec-item__value">${spec.mainCam}</span></div>
+      <div class="spec-item"><span class="spec-item__label">Фронт.</span><span class="spec-item__value">${spec.frontCam}</span></div>
+      <div class="spec-item spec-item--full"><span class="spec-item__label">Разъём</span><span class="spec-item__value">${spec.port}</span></div>
+    </div>
+    <div class="highlight-box"><span class="highlight-box__icon">★</span><span>${spec.highlight}</span></div>
+    <div class="sell-script">
+      <div class="sell-script__header"><span class="sell-script__icon">💬</span><span class="sell-script__title">Скрипт продажи</span></div>
+      <div class="sell-script__text">${script}</div>
+    </div>
+    <div class="calc-box">
+      <div class="calc-box__title">Расчёт по комбо</div>
+      ${calcHtml}
+    </div>
+    <div class="formula-note">Механика: смартфон + SIM + продукт защиты. Скидка применяется только при наличии всех трёх позиций в чеке. Для смартфонов дороже 40 000 ₽ и Apple КиберЗащита не применяется — только страховки.</div>`;
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('detailOverlay').classList.add('open');
+  document.querySelectorAll('.stock-row').forEach(r => r.classList.remove('selected'));
+  if (sourceEl && sourceEl.classList.contains('stock-row')) sourceEl.classList.add('selected');
+}
+
+function closeDetail(){
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('detailOverlay').classList.remove('open');
+  document.querySelectorAll('.stock-row').forEach(r => r.classList.remove('selected'));
+}
+
+function renderAll(){ renderControls(); renderKPI(); renderContent(); }
+// Автоматическая подстановка текущей даты (ДД.ММ.ГГ) в шапку
+(function setDateBadge() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = String(now.getFullYear()).slice(-2); // Берем последние 2 цифры года
+  document.getElementById('currentDateBadge').textContent = `${day}.${month}.${year}`;
+})();
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+</body>
+</html>
